@@ -13,13 +13,34 @@ namespace Ass2.Services
         }
 
         public List<CourseLiteDTO> GetCoursesBySemester(string semester){
+            
+            var query = (from x in _db.Courses
+                select new CourseLiteDTO
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    Semester = x.Semester
+                });
+            
+            if(semester != null){
+                return query.Where(x => x.Semester == semester).ToList();
+            }
+            else{
+                return query.ToList();
+            }
+            
+        }
+
+        public CourseLiteDTO GetCourseByID(int id){
             return (from x in _db.Courses
-            select new CourseLiteDTO
-            {
+            where x.ID == id
+            select new CourseLiteDTO{
                 ID = x.ID,
                 Name = x.Name,
                 Semester = x.Semester
-            }).ToList();
+            }).SingleOrDefault();
         }
+
+
     }
 }

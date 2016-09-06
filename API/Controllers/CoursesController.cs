@@ -19,11 +19,11 @@ namespace Ass2.API.Controllers
 
 
         [HttpGet]
-        public List<CourseLiteDTO> GetCourses(String semester = null)
+        public IActionResult GetCourses(String semester = null)
         {
-            //TODO: return list of elements taugh in that "semester"
+            //TODO: return list of elements taught in that "semester"
             //else return list of courses
-            return _service.GetCoursesBySemester(semester);
+            return Ok(_service.GetCoursesBySemester(semester));
         }
 
         [HttpGet]
@@ -32,7 +32,7 @@ namespace Ass2.API.Controllers
         {
             //TODO: Should return a more detailed object describing that course
             // return 404 if it doesn't exist   
-            return Ok();
+            return Ok(_service.GetCourseByID(id));
         }
         
         /*
