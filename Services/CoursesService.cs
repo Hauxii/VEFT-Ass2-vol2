@@ -22,7 +22,10 @@ namespace Ass2.Services
                 {
                     ID = x.ID,
                     Name = y.Name,
-                    Semester = x.Semester
+                    Semester = x.Semester,
+                    NumberOfStudents = (from cs in _db.CourseStudents
+                        where cs.CourseID == x.ID
+                        select cs).Count()
                 });
             
             if(semester != null){
