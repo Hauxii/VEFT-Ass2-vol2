@@ -17,11 +17,10 @@ namespace Ass2.Services
             
             var query = (from x in _db.Courses
                 join y in _db.CourseTemplates on x.TemplateID equals y.ID
-                orderby y.Name
+                orderby y.ID ascending
                 select new CourseLiteDTO
                 {
-                    ID = x.ID,
-                    Name = y.Name,
+                    Name = y.ID,
                     Semester = x.Semester,
                     NumberOfStudents = (from cs in _db.CourseStudents
                         where cs.CourseID == x.ID
@@ -42,11 +41,17 @@ namespace Ass2.Services
             join y in _db.CourseTemplates on x.TemplateID equals y.ID
             where x.ID == id
             select new CourseDetailsDTO{
-                ID = x.ID,
                 Name = y.Name,
                 Semester = x.Semester,
                 StartDate = x.StartDate,
-                EndDate = x.EndDate
+                EndDate = x.EndDate,
+                StudentsInCourse = (from cs in _db.CourseStudents
+                    join stu in _db.Students on cs.StudentSSN equals stu.SSN
+                    where cs.CourseID == x.ID
+                    select new StudentLiteDTO {
+                        SSN = stu.SSN,
+                        Name = stu.Name
+                    }).ToList()
             }).SingleOrDefault();
         }
         
