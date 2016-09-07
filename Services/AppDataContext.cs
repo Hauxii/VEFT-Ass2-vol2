@@ -11,6 +11,7 @@ namespace Ass2.Services
     public class AppDataContext : DbContext
     {
         public DbSet<Course> Courses {get; set;}
+        public DbSet<CourseTemplate> CourseTemplates {get; set;}
 
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)

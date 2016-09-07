@@ -7,5 +7,6 @@ namespace Ass2.Services
     {
         List<CourseLiteDTO> GetCoursesBySemester(string semester);
         CourseLiteDTO GetCourseByID(int id);
+        void AddCourse(AddCourseViewModel model);
     }
 }

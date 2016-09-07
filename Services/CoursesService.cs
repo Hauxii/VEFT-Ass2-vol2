@@ -15,10 +15,12 @@ namespace Ass2.Services
         public List<CourseLiteDTO> GetCoursesBySemester(string semester){
             
             var query = (from x in _db.Courses
+                join y in _db.CourseTemplates on x.TemplateID equals y.ID
+                orderby y.Name
                 select new CourseLiteDTO
                 {
                     ID = x.ID,
-                    Name = x.Name,
+                    Name = y.Name,
                     Semester = x.Semester
                 });
             
@@ -26,21 +28,29 @@ namespace Ass2.Services
                 return query.Where(x => x.Semester == semester).ToList();
             }
             else{
-                return query.ToList();
+                return query.Where(x => x.Semester == "20163").ToList();
             }
             
         }
 
         public CourseLiteDTO GetCourseByID(int id){
             return (from x in _db.Courses
+            join y in _db.CourseTemplates on x.TemplateID equals y.ID
             where x.ID == id
             select new CourseLiteDTO{
                 ID = x.ID,
-                Name = x.Name,
+                Name = y.Name,
                 Semester = x.Semester
             }).SingleOrDefault();
         }
+        
+        public void AddCourse(AddCourseViewModel model)
+        {
+            var course = new CourseLiteDTO
+            {
 
+            };
+        }
 
     }
 }
