@@ -119,5 +119,15 @@ namespace Ass2.Services
             
         }
 
+        public void DeleteCourse(int id)
+        {
+            Course temp = (from x in _db.Courses
+            where x.ID == id 
+            select x).SingleOrDefault();
+
+            _db.Courses.Remove(temp);
+            _db.SaveChanges();
+        }
+
     }
 }

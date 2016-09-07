@@ -81,11 +81,18 @@ namespace Ass2.API.Controllers
         /// </summary>
         /// <param name="id">The unique ID of the course</param>
         [HttpDelete]
-        [Route("{id:int}")]
+        [Route("{id:int}", Name="DeleteCourse")]
         public IActionResult DeleteCourse(int id)
         {
             //TODO: should remove the given course
-            return NoContent();
+            CourseDetailsDTO dto = _service.GetCourseByID(id);
+            if(dto != null){
+                _service.DeleteCourse(id);
+                return Ok();
+            }
+            else{
+                return NotFound();
+            }
         }
 
 
