@@ -6,8 +6,6 @@ namespace Ass2.Services.Entities
 
         public string Name { get; set; }
         
-        public int Credits { get; set; }
-
         //TODO: other information
     }
 }

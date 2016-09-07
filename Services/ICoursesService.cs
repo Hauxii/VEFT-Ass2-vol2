@@ -6,7 +6,8 @@ namespace Ass2.Services
     public interface ICoursesService
     {
         List<CourseLiteDTO> GetCoursesBySemester(string semester);
-        CourseLiteDTO GetCourseByID(int id);
+        CourseDetailsDTO GetCourseByID(int id);
         void AddCourse(AddCourseViewModel model);
+        void EditCourse(EditCourseViewModel model, int id);
     }
 }

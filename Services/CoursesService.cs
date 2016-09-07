@@ -34,14 +34,16 @@ namespace Ass2.Services
             
         }
 
-        public CourseLiteDTO GetCourseByID(int id){
+        public CourseDetailsDTO GetCourseByID(int id){
             return (from x in _db.Courses
             join y in _db.CourseTemplates on x.TemplateID equals y.ID
             where x.ID == id
-            select new CourseLiteDTO{
+            select new CourseDetailsDTO{
                 ID = x.ID,
                 Name = y.Name,
-                Semester = x.Semester
+                Semester = x.Semester,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate
             }).SingleOrDefault();
         }
         
@@ -50,15 +52,27 @@ namespace Ass2.Services
             //TODO: Validation
             //1. Validate that the templateid is valid and coursetemplate exists
             //2. validate that the semester is valid
-            
+
             var course = new Course
             {
                 TemplateID = model.TemplateID,
-                Semester = model.Semester
+                Semester = model.Semester, 
+                StartDate = model.StartDate,
+                EndDate = model.EndDate
             };
 
             _db.Courses.Add(course);
             _db.SaveChanges();
+        }
+
+        public void EditCourse(EditCourseViewModel model, int id)
+        {
+            var course = _db.Courses.SingleOrDefault(x => x.ID == id);
+            if(course != null){
+                course.StartDate = model.StartDate;
+                course.EndDate = model.EndDate;
+                _db.SaveChanges();
+            }
         }
 
     }

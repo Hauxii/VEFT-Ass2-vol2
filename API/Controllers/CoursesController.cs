@@ -31,7 +31,7 @@ namespace Ass2.API.Controllers
         public IActionResult GetCourseByID(int id)
         {
             //TODO: Should return a more detailed object describing that course
-            CourseLiteDTO dto = _service.GetCourseByID(id);
+            CourseDetailsDTO dto = _service.GetCourseByID(id);
 
             if(dto != null){
                  return Ok(dto);
@@ -41,20 +41,29 @@ namespace Ass2.API.Controllers
             }
         }
         
-        /*
+        
         [HttpPut]
         [Route("{id:int}")]
-        public IActionResult EditCourse(int id, [FromBody]Course toEdit)
+        public IActionResult EditCourse([FromBody]EditCourseViewModel toEdit, int id)
         {
             //TODO: Should allow the client of the API to modify the given course 
             //instance. The properties which should be mutable are StartDate and 
             //EndDate, others (CourseID and Semester) should be immutable.
             //404 if it doesn't exist
 
-            var location = Url.Link("GetCourseByID", new {id = toEdit.ID});
-            return Ok();
+            //var location = Url.Link("GetCourseByID", new {id = toEdit.ID});
+            CourseDetailsDTO dto = _service.GetCourseByID(id);
+
+            if(dto != null){
+                 _service.EditCourse(toEdit, id);
+                 return Ok();
+            }
+            else{
+                return NotFound();
+            }
+            
         }
-        */
+        
 
         [HttpDelete]
         [Route("{id:int}")]
