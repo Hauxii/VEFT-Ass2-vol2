@@ -31,8 +31,14 @@ namespace Ass2.API.Controllers
         public IActionResult GetCourseByID(int id)
         {
             //TODO: Should return a more detailed object describing that course
-            // return 404 if it doesn't exist   
-            return Ok(_service.GetCourseByID(id));
+            CourseLiteDTO dto = _service.GetCourseByID(id);
+
+            if(dto != null){
+                 return Ok(dto);
+            }
+            else{
+                return NotFound();
+            }
         }
         
         /*
