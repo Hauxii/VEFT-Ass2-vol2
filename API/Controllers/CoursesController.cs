@@ -8,6 +8,9 @@ using Ass2.Services;
 
 namespace Ass2.API.Controllers
 {
+    /// <summary>
+    /// Represents resources for courses
+    /// </summary>
     [Route("/api/courses")]
     public class CoursesController : Controller
     {
@@ -17,7 +20,11 @@ namespace Ass2.API.Controllers
             _service = service;
         }
 
-
+        /// <summary>
+        /// This method returns a list of courses taught in the given semester, current semester if no semester is given
+        /// </summary>
+        /// <param name="semester">The semester you wish to see courses for</param>
+        /// <returns>List of courses</returns>
         [HttpGet]
         public IActionResult GetCourses(String semester = null)
         {
@@ -26,6 +33,12 @@ namespace Ass2.API.Controllers
             return Ok(_service.GetCoursesBySemester(semester));
         }
 
+
+        /// <summary>
+        /// This method returns a single course based on the ID in the url
+        /// </summary>
+        /// <param name="id">The unique ID of the course</param>
+        /// <returns>A course</returns>
         [HttpGet]
         [Route("{id:int}", Name = "GetCourseByID")]
         public IActionResult GetCourseByID(int id)
@@ -41,17 +54,16 @@ namespace Ass2.API.Controllers
             }
         }
         
-        
+        /// <summary>
+        /// This method allows the client of the API to modify the given course instance
+        /// </summary>
+        /// <param name="toEdit">The edited instance of the course</param>
+        /// <param name="id">The unique ID of the course</param>
         [HttpPut]
         [Route("{id:int}")]
         public IActionResult EditCourse([FromBody]EditCourseViewModel toEdit, int id)
         {
-            //TODO: Should allow the client of the API to modify the given course 
-            //instance. The properties which should be mutable are StartDate and 
-            //EndDate, others (CourseID and Semester) should be immutable.
-            //404 if it doesn't exist
 
-            //var location = Url.Link("GetCourseByID", new {id = toEdit.ID});
             CourseDetailsDTO dto = _service.GetCourseByID(id);
 
             if(dto != null){
@@ -64,7 +76,10 @@ namespace Ass2.API.Controllers
             
         }
         
-
+        /// <summary>
+        /// This method deletes an existing course
+        /// </summary>
+        /// <param name="id">The unique ID of the course</param>
         [HttpDelete]
         [Route("{id:int}")]
         public IActionResult DeleteCourse(int id)
@@ -73,12 +88,16 @@ namespace Ass2.API.Controllers
             return NoContent();
         }
 
+
+        /// <summary>
+        /// This method returns a list of students in a course
+        /// </summary>
+        /// <param name="id">The unique ID of the course</param>
+        /// <returns>A list of students</returns>
         [HttpGet]
         [Route("{id:int}/students", Name="GetStudents")] 
         public IActionResult GetStudents(int id)
         {
-            //TODO: Should return a list of all students in that course
-            //404 if course doesn't exist
             CourseDetailsDTO dto = _service.GetCourseByID(id);
 
             if(dto == null){
@@ -89,13 +108,16 @@ namespace Ass2.API.Controllers
             }
         }
 
+
+        /// <summary>
+        /// This method adds a new student to a course
+        /// </summary>
+        /// <param name="toAdd">New instance of student</param>
+        /// <param name="id">The unique ID of the course</param>
         [HttpPost]
         [Route("{id:int}/students", Name="AddStudentToCourse")]
         public IActionResult AddStudentToCourse([FromBody]AddStudentViewModel toAdd, int id)
         {
-            //TODO: should add a new student to that course, 
-            //It is assumed that the request body contains the
-
             bool success = _service.AddStudentToCourse(toAdd, id);
             if(success){
                 return StatusCode(201);
