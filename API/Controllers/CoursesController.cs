@@ -74,12 +74,19 @@ namespace Ass2.API.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}/students")]
-        public IActionResult GetStudents()
+        [Route("{id:int}/students", Name="GetStudents")] 
+        public IActionResult GetStudents(int id)
         {
             //TODO: Should return a list of all students in that course
             //404 if course doesn't exist
-            return Ok();
+            CourseDetailsDTO dto = _service.GetCourseByID(id);
+
+            if(dto == null){
+                 return NotFound();
+            }
+            else{
+                return Ok(_service.GetStudentsInCourse(id));
+            }
         }
 
         [HttpPost]

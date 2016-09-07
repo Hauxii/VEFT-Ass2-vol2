@@ -75,5 +75,16 @@ namespace Ass2.Services
             }
         }
 
+        public List<StudentLiteDTO> GetStudentsInCourse(int id){
+            return (from x in _db.Students
+            join y in _db.CourseStudents on x.SSN equals y.StudentSSN
+            join z in _db.Courses on y.CourseID equals z.ID
+            where z.ID == id
+            select new StudentLiteDTO{
+                SSN = x.SSN,
+                Name = x.Name
+            }).ToList();
+        }
+
     }
 }
