@@ -90,12 +90,19 @@ namespace Ass2.API.Controllers
         }
 
         [HttpPost]
-        [Route("{id:int}/students")]
-        public IActionResult AddStudentToCourse()
+        [Route("{id:int}/students", Name="AddStudentToCourse")]
+        public IActionResult AddStudentToCourse([FromBody]AddStudentViewModel toAdd, int id)
         {
             //TODO: should add a new student to that course, 
             //It is assumed that the request body contains the
-            return StatusCode(201);
+
+            bool success = _service.AddStudentToCourse(toAdd, id);
+            if(success){
+                return StatusCode(201);
+            }
+            else{
+                return Ok();
+            }
         }
     
     

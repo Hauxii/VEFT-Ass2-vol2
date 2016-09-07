@@ -86,5 +86,30 @@ namespace Ass2.Services
             }).ToList();
         }
 
+        public bool AddStudentToCourse(AddStudentViewModel model, int id)
+        {
+            AddStudentViewModel current = (from x in _db.CourseStudents
+            where x.CourseID == id && x.StudentSSN == model.StudentSSN
+            select new AddStudentViewModel{
+                CourseID = x.CourseID,
+                StudentSSN = x.StudentSSN
+            }).SingleOrDefault();
+            
+            if(current != null){
+                return false;
+            }
+
+             var entry = new CourseStudent{
+                CourseID = id,
+                StudentSSN = model.StudentSSN
+            };
+
+            _db.CourseStudents.Add(entry);
+            _db.SaveChanges();
+            return true;
+            
+            
+        }
+
     }
 }

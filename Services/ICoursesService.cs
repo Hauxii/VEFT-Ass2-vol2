@@ -10,5 +10,6 @@ namespace Ass2.Services
         void AddCourse(AddCourseViewModel model);
         void EditCourse(EditCourseViewModel model, int id);
         List<StudentLiteDTO> GetStudentsInCourse(int id);
+        bool AddStudentToCourse(AddStudentViewModel model, int id);
     }
 }
