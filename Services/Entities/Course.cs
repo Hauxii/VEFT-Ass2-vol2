@@ -6,7 +6,7 @@ namespace Ass2.Services.Entities
     {
         public int ID { get; set; }
 
-        public int TemplateID { get; set; }
+        public string TemplateID { get; set; }
 
         public string Semester { get; set; }
 
