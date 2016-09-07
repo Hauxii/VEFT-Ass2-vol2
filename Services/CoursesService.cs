@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Ass2.Models;
 using System.Linq;
+using Ass2.Services.Entities;
 
 namespace Ass2.Services
 {
@@ -46,10 +47,18 @@ namespace Ass2.Services
         
         public void AddCourse(AddCourseViewModel model)
         {
-            var course = new CourseLiteDTO
+            //TODO: Validation
+            //1. Validate that the templateid is valid and coursetemplate exists
+            //2. validate that the semester is valid
+            
+            var course = new Course
             {
-
+                TemplateID = model.TemplateID,
+                Semester = model.Semester
             };
+
+            _db.Courses.Add(course);
+            _db.SaveChanges();
         }
 
     }
