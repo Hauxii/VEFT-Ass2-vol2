@@ -97,10 +97,10 @@ namespace Ass2.Services
         public bool AddStudentToCourse(AddStudentViewModel model, int id)
         {
             AddStudentViewModel current = (from x in _db.CourseStudents
-            where x.CourseID == id && x.StudentSSN == model.StudentSSN
+            where x.CourseID == id && x.StudentSSN == model.SSN
             select new AddStudentViewModel{
                 CourseID = x.CourseID,
-                StudentSSN = x.StudentSSN
+                SSN = x.StudentSSN
             }).SingleOrDefault();
             
             if(current != null){
@@ -109,7 +109,7 @@ namespace Ass2.Services
 
              var entry = new CourseStudent{
                 CourseID = id,
-                StudentSSN = model.StudentSSN
+                StudentSSN = model.SSN
             };
 
             _db.CourseStudents.Add(entry);
