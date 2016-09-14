@@ -148,5 +148,37 @@ namespace Ass2.Services
             }
         }
 
+        public bool AddStudentToWaitinglist(AddStudentViewModel model, int id)
+        {
+            StudentInWaitinglist current = (from x in _db.Waitinglist
+            where x.CourseID == id && x.StudentSSN == model.SSN
+            select x).SingleOrDefault();
+
+            if(current == null){
+                var entry = new StudentInWaitinglist{
+                    CourseID = id,
+                    StudentSSN = model.SSN,
+                };
+
+                _db.Waitinglist.Add(entry);
+                _db.SaveChanges();
+                return true;
+            }
+            
+            return false; 
+        }
+
+        public List<StudentLiteDTO> GetWaitinglist(int id)
+        {
+            return (from x in _db.Students
+            join y in _db.Waitinglist on x.SSN equals y.StudentSSN
+            join z in _db.Courses on y.CourseID equals z.ID
+            where z.ID == id
+            select new StudentLiteDTO{
+                SSN = x.SSN,
+                Name = x.Name
+            }).ToList();
+        }
+
     }
 }

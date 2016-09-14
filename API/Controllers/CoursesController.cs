@@ -148,6 +148,34 @@ namespace Ass2.API.Controllers
             var location = Url.Link("GetCourseByID", new {id = course.ID});
             return Created(location, course);
         }
+
+        [HttpPost]
+        [Route("{id:int}/waitinglist")]
+        public IActionResult AddStudentToWaitinglist([FromBody]AddStudentViewModel toAdd, int id)
+        {
+            bool studentExsist = _service.StudentInStudents(toAdd);
+
+            if(!studentExsist){
+                return NotFound();
+            }
+
+            bool success = _service.AddStudentToWaitinglist(toAdd, id);
+
+            if(success && studentExsist){
+                return Ok();
+            }
+
+            else{
+                return StatusCode(412);
+            }
+        }
+
+        [HttpGet]
+        [Route("{id:int}/waitinglist")]
+        public IActionResult GetCourseWaitinglist(int id)
+        {
+            return Ok(_service.GetWaitinglist(id));
+        }
     
     
     }

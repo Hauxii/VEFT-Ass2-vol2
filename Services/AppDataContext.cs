@@ -14,6 +14,7 @@ namespace Ass2.Services
         public DbSet<CourseTemplate> CourseTemplates {get; set;}
         public DbSet<Student> Students {get; set;}
         public DbSet<CourseStudent> CourseStudents {get; set;}
+        public DbSet<StudentInWaitinglist> Waitinglist {get; set;}
 
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)
