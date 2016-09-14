@@ -55,22 +55,25 @@ namespace Ass2.Services
             }).SingleOrDefault();
         }
         
-        public void AddCourse(AddCourseViewModel model)
+        public int AddCourse(AddCourseViewModel model)
         {
             //TODO: Validation
             //1. Validate that the templateid is valid and coursetemplate exists
             //2. validate that the semester is valid
 
-            var course = new Course
+            Course course = new Course
             {
                 TemplateID = model.TemplateID,
                 Semester = model.Semester, 
                 StartDate = model.StartDate,
-                EndDate = model.EndDate
+                EndDate = model.EndDate,
+                MaxStudents = model.MaxStudents
             };
 
             _db.Courses.Add(course);
             _db.SaveChanges();
+
+            return course.ID;
         }
 
         public void EditCourse(EditCourseViewModel model, int id)

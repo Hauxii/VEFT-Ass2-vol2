@@ -7,7 +7,7 @@ namespace Ass2.Services
     {
         List<CourseLiteDTO> GetCoursesBySemester(string semester);
         CourseDetailsDTO GetCourseByID(int id);
-        void AddCourse(AddCourseViewModel model);
+        int AddCourse(AddCourseViewModel model);
         void EditCourse(EditCourseViewModel model, int id);
         List<StudentLiteDTO> GetStudentsInCourse(int id);
         bool AddStudentToCourse(AddStudentViewModel model, int id);

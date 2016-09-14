@@ -141,6 +141,13 @@ namespace Ass2.API.Controllers
                 return StatusCode(412);
             }
         }
+
+        [HttpPost]
+        public IActionResult AddCourse([FromBody]AddCourseViewModel model){
+            int modelid = _service.AddCourse(model);
+            var location = Url.Link("GetCourseByID", new {id = modelid});
+            return Created(location, null);
+        }
     
     
     }
