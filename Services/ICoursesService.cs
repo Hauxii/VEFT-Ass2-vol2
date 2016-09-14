@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Ass2.Models;
+using Ass2.Services.Entities;
 
 namespace Ass2.Services
 {
@@ -7,7 +8,7 @@ namespace Ass2.Services
     {
         List<CourseLiteDTO> GetCoursesBySemester(string semester);
         CourseDetailsDTO GetCourseByID(int id);
-        int AddCourse(AddCourseViewModel model);
+        Course AddCourse(AddCourseViewModel model);
         void EditCourse(EditCourseViewModel model, int id);
         List<StudentLiteDTO> GetStudentsInCourse(int id);
         bool AddStudentToCourse(AddStudentViewModel model, int id);

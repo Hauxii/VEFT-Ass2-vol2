@@ -55,7 +55,7 @@ namespace Ass2.Services
             }).SingleOrDefault();
         }
         
-        public int AddCourse(AddCourseViewModel model)
+        public Course AddCourse(AddCourseViewModel model)
         {
             //TODO: Validation
             //1. Validate that the templateid is valid and coursetemplate exists
@@ -73,7 +73,7 @@ namespace Ass2.Services
             _db.Courses.Add(course);
             _db.SaveChanges();
 
-            return course.ID;
+            return course;
         }
 
         public void EditCourse(EditCourseViewModel model, int id)
