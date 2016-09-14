@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Ass2.Models;
 using System.Linq;
@@ -99,26 +100,28 @@ namespace Ass2.Services
 
         public bool AddStudentToCourse(AddStudentViewModel model, int id)
         {
-            AddStudentViewModel current = (from x in _db.CourseStudents
+            CourseStudent current = (from x in _db.CourseStudents
             where x.CourseID == id && x.StudentSSN == model.SSN
-            select new AddStudentViewModel{
-                CourseID = x.CourseID,
-                SSN = x.StudentSSN
-            }).SingleOrDefault();
-            
-            if(current != null){
-                return false;
+            select x).SingleOrDefault();
+
+            if(current == null){
+                var entry = new CourseStudent{
+                    CourseID = id,
+                    StudentSSN = model.SSN,
+                    Active = true
+                };
+
+                _db.CourseStudents.Add(entry);
+                _db.SaveChanges();
+                return true;
             }
-
-             var entry = new CourseStudent{
-                CourseID = id,
-                StudentSSN = model.SSN
-            };
-
-            _db.CourseStudents.Add(entry);
-            _db.SaveChanges();
-            return true;
             
+            else if(current.Active == false){
+                current.Active = true;
+                _db.SaveChanges();
+                return true;
+            }
+            return false;           
             
         }
 
