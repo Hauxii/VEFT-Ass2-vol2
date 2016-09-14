@@ -129,5 +129,18 @@ namespace Ass2.Services
             _db.SaveChanges();
         }
 
+        public bool StudentInStudents(AddStudentViewModel model){
+           var current = (from x in _db.Students
+            where x.SSN == model.SSN
+            select x).SingleOrDefault();
+            
+            if(current == null){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+
     }
 }

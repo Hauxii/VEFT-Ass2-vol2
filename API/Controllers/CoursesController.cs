@@ -125,12 +125,20 @@ namespace Ass2.API.Controllers
         [Route("{id:int}/students", Name="AddStudentToCourse")]
         public IActionResult AddStudentToCourse([FromBody]AddStudentViewModel toAdd, int id)
         {
+            bool studentExsist = _service.StudentInStudents(toAdd);
+
+            if(!studentExsist){
+                return NotFound();
+            }
+
             bool success = _service.AddStudentToCourse(toAdd, id);
-            if(success){
+
+            if(success && studentExsist){
                 return StatusCode(201);
             }
+
             else{
-                return Ok();
+                return StatusCode(412);
             }
         }
     
