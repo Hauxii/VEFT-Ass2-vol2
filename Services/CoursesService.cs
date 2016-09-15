@@ -91,7 +91,7 @@ namespace Ass2.Services
             return (from x in _db.Students
             join y in _db.CourseStudents on x.SSN equals y.StudentSSN
             join z in _db.Courses on y.CourseID equals z.ID
-            where z.ID == id
+            where z.ID == id && y.Active == true
             select new StudentLiteDTO{
                 SSN = x.SSN,
                 Name = x.Name
@@ -100,9 +100,22 @@ namespace Ass2.Services
 
         public bool AddStudentToCourse(AddStudentViewModel model, int id)
         {
+            if(isCourseFull(id)){
+                return false;
+            }
+
             CourseStudent current = (from x in _db.CourseStudents
             where x.CourseID == id && x.StudentSSN == model.SSN
             select x).SingleOrDefault();
+
+            //if student is on the waiting list it should be removed when added to course
+            StudentInWaitinglist waiting = (from x in _db.Waitinglist
+            where x.CourseID == id && x.StudentSSN == model.SSN
+            select x).SingleOrDefault();
+            if(waiting != null){
+                _db.Waitinglist.Remove(waiting);
+                _db.SaveChanges();
+            }
 
             if(current == null){
                 var entry = new CourseStudent{
@@ -154,7 +167,11 @@ namespace Ass2.Services
             where x.CourseID == id && x.StudentSSN == model.SSN
             select x).SingleOrDefault();
 
-            if(current == null){
+            var student = (from x in _db.CourseStudents
+            where x.CourseID == id && x.StudentSSN == model.SSN
+            select x).SingleOrDefault();
+
+            if(current == null && student == null){
                 var entry = new StudentInWaitinglist{
                     CourseID = id,
                     StudentSSN = model.SSN,
@@ -178,6 +195,33 @@ namespace Ass2.Services
                 SSN = x.SSN,
                 Name = x.Name
             }).ToList();
+        }
+
+        public bool isCourseFull(int id){
+            int numberOfStudentsInCourse = (from cs in _db.CourseStudents
+                        where cs.CourseID == id && cs.Active == true
+                        select cs).Count();
+            if(numberOfStudentsInCourse == 4){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        public bool DeleteFromCourse(int id, string ssn){
+            var student = (from x in _db.CourseStudents
+            where x.StudentSSN == ssn && x.CourseID == id
+            select x).SingleOrDefault();
+
+            if(student == null){
+                return false;
+            }
+            else{
+                student.Active = false;
+                _db.SaveChanges();
+                return true;
+            }
         }
 
     }

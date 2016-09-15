@@ -176,6 +176,26 @@ namespace Ass2.API.Controllers
         {
             return Ok(_service.GetWaitinglist(id));
         }
+
+        [HttpDelete]
+        [Route("{id:int}/students/{ssnID:int}", Name="DeleteFromCourse")]
+        public IActionResult DeleteFromCourse(int id, int ssnID){
+            string ssn = ssnID.ToString();
+            CourseDetailsDTO dto = _service.GetCourseByID(id);
+            if(dto != null){
+                if(_service.DeleteFromCourse(id, ssn)){
+                    return StatusCode(204);
+                }
+                else{
+                    //student not found in course by given ssn
+                    return NotFound();
+                }
+            }
+            else{
+                //course not found by given id
+                return NotFound();
+            }
+        }
     
     
     }

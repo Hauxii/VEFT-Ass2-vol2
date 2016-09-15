@@ -16,5 +16,7 @@ namespace Ass2.Services
         bool AddStudentToWaitinglist(AddStudentViewModel model, int id);
         void DeleteCourse(int id);
         bool StudentInStudents(AddStudentViewModel model);
+        bool isCourseFull(int id);
+        bool DeleteFromCourse(int id, string ssn);
     }
 }
